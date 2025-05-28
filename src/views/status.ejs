@@ -1,0 +1,172 @@
+<!-- status.ejs -->
+<!-- EJS html template to display the GitHub status feed -->
+<!-- Each data item will be listed in a table -->
+<!-- column: pubDate, title, and link -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #0d0d1a;
+            color: #e6e6ff;
+            background-image: url('/img/github-neon-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(20, 20, 40, 0.85);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(155, 89, 182, 0.7);
+            border: 1px solid rgba(155, 89, 182, 0.5);
+        }
+        h1 {
+            color: #ff00ff;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #a742f5;
+            padding-bottom: 10px;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+        }
+        .pirate-message {
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: rgba(40, 10, 60, 0.7);
+            border-radius: 5px;
+            border-left: 4px solid #a742f5;
+            color: #f8f1e3;
+            text-shadow: 0 0 5px #a742f5;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: rgba(20, 20, 40, 0.6);
+            border: 1px solid #a742f5;
+            box-shadow: 0 0 15px rgba(155, 89, 182, 0.5);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(155, 89, 182, 0.5);
+        }
+        th {
+            background-color: rgba(103, 58, 183, 0.8);
+            color: white;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+        tr:hover {
+            background-color: rgba(103, 58, 183, 0.3);
+        }
+        a {
+            color: #a742f5;
+            text-decoration: none;
+            text-shadow: 0 0 5px #a742f5;
+            transition: all 0.3s ease;
+        }
+        a:hover {
+            color: #ff00ff;
+            text-decoration: underline;
+            text-shadow: 0 0 10px #ff00ff;
+        }
+        .status-good {
+            color: #4afa9c;
+            font-weight: bold;
+            text-shadow: 0 0 5px #4afa9c;
+        }
+        .status-bad {
+            color: #ff5a6e;
+            font-weight: bold;
+            text-shadow: 0 0 5px #ff5a6e;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #a742f5;
+            text-shadow: 0 0 5px #a742f5;
+            border-top: 1px solid rgba(155, 89, 182, 0.5);
+            padding-top: 10px;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .github-logo {
+            fill: #a742f5;
+            filter: drop-shadow(0 0 10px #ff00ff);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from {
+                filter: drop-shadow(0 0 5px #a742f5);
+            }
+            to {
+                filter: drop-shadow(0 0 15px #ff00ff);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <svg class="github-logo" viewBox="0 0 16 16" width="80" height="80">
+                <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+            </svg>
+        </div>
+        <h1><%= title %></h1>
+        
+        <div class="pirate-message">
+            Ahoy there mateys! Below be the current status o' GitHub. Keep yer eyes peeled for any trouble on the digital seas!
+        </div>
+        
+        <% if (feedData && feedData.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Status Update</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% feedData.forEach(item => { %>
+                        <tr>
+                            <td><%= new Date(item.pubDate).toLocaleString() %></td>
+                            <td>
+                                <% if (item.title.toLowerCase().includes('operational')) { %>
+                                    <span class="status-good"><%= item.title %></span>
+                                <% } else if (item.title.toLowerCase().includes('outage') || item.title.toLowerCase().includes('issue')) { %>
+                                    <span class="status-bad"><%= item.title %></span>
+                                <% } else { %>
+                                    <%= item.title %>
+                                <% } %>
+                            </td>
+                            <td><a href="<%= item.link %>" target="_blank">View Details</a></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="no-data">Blimey! There be no data available at the moment. The sea be calm, or we've lost our map!</p>
+        <% } %>
+        
+        <div class="footer">
+            <p>Arr! This here be the GitHub Status Monitor - Refreshed on: <%= new Date().toLocaleString() %></p>
+            <p>Created for ye scallywags in the crew! ☠️</p>
+        </div>
+    </div>
+</body>
+</html>
